@@ -1,5 +1,6 @@
 package info.riabokon.mywarehouse.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class Operator {
     @ManyToOne(optional = false)
     @JoinColumn(name = "assigned_area_id")
     private WarehouseArea assignedArea;
+    @JsonIgnore
     @OneToMany(mappedBy = "assignedOperator", cascade = CascadeType.ALL)
     private List<MaintenanceJob> maintenanceJobs;
 }

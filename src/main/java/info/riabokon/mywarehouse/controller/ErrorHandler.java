@@ -2,6 +2,7 @@ package info.riabokon.mywarehouse.controller;
 
 import info.riabokon.mywarehouse.util.ErrorInfoDTO;
 import info.riabokon.mywarehouse.util.TimeRangeException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -32,6 +33,13 @@ public class ErrorHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public ErrorInfoDTO missingServletRequestParameterError(HttpServletRequest req, MissingServletRequestParameterException e) {
+        return logAndGetErrorInfo(req, e);
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)  // 404
+    @ExceptionHandler(EntityNotFoundException.class)
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public ErrorInfoDTO missingEntityByIdError(HttpServletRequest req, EntityNotFoundException e) {
         return logAndGetErrorInfo(req, e);
     }
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 500

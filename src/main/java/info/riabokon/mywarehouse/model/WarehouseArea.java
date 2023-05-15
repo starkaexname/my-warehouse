@@ -1,5 +1,6 @@
 package info.riabokon.mywarehouse.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,10 @@ public class WarehouseArea {
     private Long id;
     @NotBlank
     private String name;
+    @JsonIgnore
     @OneToMany(mappedBy = "assignedArea", cascade = CascadeType.ALL)
     private List<Operator> operators;
+    @JsonIgnore
     @OneToMany(mappedBy = "area", cascade = CascadeType.ALL)
     private List<MaintenanceJob> maintenanceJobs;
 }

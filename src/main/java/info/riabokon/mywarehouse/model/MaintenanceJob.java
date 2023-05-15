@@ -1,12 +1,12 @@
 package info.riabokon.mywarehouse.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -17,11 +17,9 @@ public class MaintenanceJob {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "area_id")
     private WarehouseArea area;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "assigned_operator_id")
     private Operator assignedOperator;

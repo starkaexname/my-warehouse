@@ -5,10 +5,9 @@ import info.riabokon.mywarehouse.service.MaintenanceJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import java.util.List;
 public class MaintenanceJobController {
     @Autowired
     private MaintenanceJobService service;
+
     @GetMapping
     public List<MaintenanceJob> getMaintenanceJobs(
             @RequestParam(value = "startTime", required = false)
@@ -32,5 +32,25 @@ public class MaintenanceJobController {
             Long areaId) {
         log.info("startTime is {}, endTime is {}, operatorId is {}, areaId is {} ", startTime, endTime, operatorId, areaId);
         return service.getMaintenanceJobs(startTime, endTime, operatorId, areaId);
+    }
+    @GetMapping("/{maintenanceJobId}")
+    public MaintenanceJob get(@PathVariable Long maintenanceJobId) {
+        return service.get(maintenanceJobId);
+    }
+
+    @PostMapping
+    public ResponseEntity<MaintenanceJob> save(@RequestParam Long operatorId, @RequestParam Long assignedAreaId, @RequestBody MaintenanceJob maintenanceJob) {
+        return new ResponseEntity<>(service.save(operatorId, assignedAreaId, maintenanceJob), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{maintenanceJobId}")
+    public ResponseEntity<MaintenanceJob> update(@PathVariable Long maintenanceJobId, @RequestBody MaintenanceJob maintenanceJob) {
+        return new ResponseEntity<>(service.update(maintenanceJobId, maintenanceJob), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{maintenanceJobId}")
+    public ResponseEntity<Void> delete(@PathVariable Long maintenanceJobId) {
+        service.delete(maintenanceJobId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
